@@ -1,6 +1,3 @@
-Here’s a professional and structured draft for the README file for your repository:
-
----
 
 # FxApi
 
@@ -108,7 +105,3 @@ This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE)
 ## Contact
 
 For any questions or feedback, feel free to reach out to [Hakeem](emmanuelokore67@gmail.com).
-
----
-
-Let me know if you'd like adjustments or additional sections!
