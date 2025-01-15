@@ -162,3 +162,4 @@ C:\Users\Emmanuel\StockApi\api\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.En
 C:\Users\Emmanuel\StockApi\api\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Emmanuel\StockApi\api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Emmanuel\StockApi\api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Emmanuel\StockApi\api\obj\Debug\net9.0\api.sourcelink.json

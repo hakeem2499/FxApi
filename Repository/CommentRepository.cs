@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -18,19 +19,31 @@ namespace api.Repository
             _context = context;
         }
 
-        private IQueryable<Comment> GetCommentsQuery()
+        private IQueryable<Comment> GetCommentsQuery(CommentQueryObject query)
         {
-            return _context.Comments.Include(a => a.AppUser).AsQueryable();
+            var comments = _context.Comments.Include(a => a.AppUser).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Symbol))
+            {
+                comments = comments.Where(s => s.Stock.Symbol.Contains(query.Symbol));
+            }
+
+            if (query.IsDescending == true)
+            {
+                comments = comments.OrderByDescending(c => c.CreatedOn);
+            }
+
+            return comments;
         }
 
-        public async Task<List<Comment>> GetAllAsync()
+        public async Task<List<Comment>> GetAllAsync(CommentQueryObject query)
         {
-            return await GetCommentsQuery().ToListAsync();
+            return await GetCommentsQuery(query).ToListAsync();
         }
 
-        public async Task<Comment?> GetByIdAsync(int id)
+        public async Task<Comment?> GetByIdAsync(int id, CommentQueryObject query)
         {
-            return await GetCommentsQuery().FirstOrDefaultAsync(comment => comment.Id == id);
+            return await GetCommentsQuery(query).FirstOrDefaultAsync(comment => comment.Id == id);
         }
 
         public async Task<Comment> CreateAsync(Comment commentModel)
@@ -40,9 +53,13 @@ namespace api.Repository
             return commentModel;
         }
 
-        public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
+        public async Task<Comment?> UpdateAsync(
+            int id,
+            Comment commentModel,
+            CommentQueryObject query
+        )
         {
-            var comment = await GetCommentsQuery().FirstOrDefaultAsync(x => x.Id == id);
+            var comment = await GetCommentsQuery(query).FirstOrDefaultAsync(x => x.Id == id);
             if (comment == null)
             {
                 return null;
