@@ -14,6 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddControllers();
+
+// Add logging configuration
+builder.Logging.ClearProviders(); // Optional: Clear default providers if needed
+builder.Logging.AddConsole(); // Enable console logging
+builder.Logging.AddDebug(); // Enable debug logging
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen(); // Add Swagger services
 
@@ -97,10 +103,16 @@ builder
             ValidAudience = builder.Configuration["JWT:Audience"],
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+                System.Text.Encoding.UTF8.GetBytes(
+                    builder.Configuration["JWT:SigningKey"]
+                        ?? throw new InvalidOperationException("JWT SigningKey is not configured")
+                )
             ),
         };
     });
+
+builder.Services.AddHostedService<RefreshTokenCleanupService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();

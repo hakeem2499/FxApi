@@ -9,5 +9,7 @@ namespace api.Interfaces
     public interface ITokenService
     {
         string CreateToken(AppUser user);
+        string GenerateRefreshToken();
+        Task<bool> RevokeRefreshToken(string AppUserId);
     }
 }

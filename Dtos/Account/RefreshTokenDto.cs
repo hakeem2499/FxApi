@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 
 namespace api.Dtos.Account
 {
-    public class NewUserDto
+    public class RefreshTokenDto
     {
-        public required string UserName { get; init; }
-        public required string Email { get; init; }
-        public required string AccessToken { get; init; }
         public required string RefreshToken { get; init; }
     }
 }
